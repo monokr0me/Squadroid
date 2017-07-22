@@ -124,7 +124,6 @@ function pickSong(obj, kw) {
 
             //select a random index within the song list
             return Math.floor(Math.random() * (Object.keys(obj).length - 1)) + 1; 
-            break;
         }
         //if we have multiple matches, select one at random
         else if(found.length > 1) { 
