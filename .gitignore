@@ -46,3 +46,8 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
+token/token.json
+.idea/modules.xml
+.idea/Squadroid.iml
+.idea/vcs.xml
+.idea/workspace.xml
