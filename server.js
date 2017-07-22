@@ -2,18 +2,23 @@ var express = require('express')
   , logger = require('morgan')
   , app = express()
   , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade');
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const cmd = require('./commands/commands.js');
+
 const jsonf = require('jsonfile');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var songmngr = require('./commands/songmngr.js')
-var songlist = './data/songlist.json'
+
+const cmd = require('./commands/commands.js');
+const songmngr = require('./commands/songmngr.js');
+
+var songlist = './data/songlist.json';
+var bottoken = './token/token.json';
 var nowplaying = 'No Song Playing';
-var bottoken = './token/token.json'
-app.use(logger('dev'))
-app.use(express.static(__dirname + '/static'))
+
+app.use(logger('dev'));
+app.use(express.static(__dirname + '/static'));
 
 
 //connections to homepage of webserver
