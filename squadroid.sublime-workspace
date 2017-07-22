@@ -1,0 +1,237 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "server.js",
+			"settings":
+			{
+				"buffer_size": 1660,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Marlon/Documents/Bot Dev",
+		"/C/Users/Marlon/Documents/Bot Dev/commands",
+		"/C/Users/Marlon/Documents/Bot Dev/data",
+		"/C/Users/Marlon/Documents/Bot Dev/source",
+		"/C/Users/Marlon/Documents/Bot Dev/source/templates",
+		"/C/Users/Marlon/Documents/Bot Dev/static"
+	],
+	"file_history":
+	[
+		"/C/Users/Marlon/Documents/Bot Dev/squadroid.sublime-project",
+		"/C/Users/Marlon/Documents/Bot Dev/source/templates/homepage.jade",
+		"/C/Users/Marlon/Documents/Bot Dev/server.js",
+		"/C/Users/Marlon/Documents/Bot Dev/commands/commands.js",
+		"/C/Users/Marlon/Documents/Bot Dev/commands/songmngr.js",
+		"/C/Users/Marlon/Documents/Bot Dev/data/songlist.json",
+		"/C/Users/Marlon/Documents/Bot Dev/package.json",
+		"/C/Users/Marlon/Documents/Bot Dev/source/stylesheets/index.styl",
+		"/C/Users/Marlon/Downloads/Discord_Bot/Discord_Bot/RoboBot.js",
+		"/C/Users/Marlon/Documents/Bot Dev/bot.js",
+		"/C/Users/Marlon/Documents/Bot Dev/routes.js",
+		"/C/Program Files/nodejs/node_modules/npm/bin/read-package-json.js",
+		"/C/Program Files/nodejs/node_modules/npm/package.json",
+		"/C/Users/Marlon/Documents/Bot Dev/resources/index.js",
+		"/C/Users/Marlon/Documents/Bot Dev/resources/items/del.js",
+		"/C/Users/Marlon/Documents/Bot Dev/resources/items/create.js",
+		"/C/Users/Marlon/Documents/Bot Dev/resources/items/list.js",
+		"/C/Users/Marlon/Documents/Bot Dev/index.js",
+		"/C/Users/Marlon/Documents/Bot Dev/resources/items/index.js"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"no",
+			"jsonfile",
+			"0",
+			" ",
+			"})"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1660,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "squadroid.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
