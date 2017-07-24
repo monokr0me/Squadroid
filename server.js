@@ -64,20 +64,7 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
 
-  //songplays event sent by songmngr.playSong with the title of current song
-  client.on('songplays', function(song) {
-    console.log("songplays event received")
 
-    //update nowplaying 
-    nowplaying = song.title;
-
-    //send updatesong event to the socket to update webpage
-    socket.emit('updatesong', {'title': nowplaying});
-    
-    //update "game" on bot with currently playing song
-    client.user.setGame(nowplaying);
-
-  });
 
   //stopsong event sent by clicking stop button
   socket.on('stopsong', function() {
@@ -98,6 +85,21 @@ io.on('connection', function(socket){
     client.user.setGame(nowplaying);
   }
 
+
+  });
+
+    //songplays event sent by songmngr.playSong with the title of current song
+  client.on('songplays', function(song) {
+    console.log("songplays event received")
+
+    //update nowplaying 
+    nowplaying = song.title;
+
+    //send updatesong event to the socket to update webpage
+    io.emit('updatesong', {'title': nowplaying});
+    
+    //update "game" on bot with currently playing song
+    client.user.setGame(nowplaying);
 
   });
 

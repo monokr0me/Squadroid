@@ -13,34 +13,35 @@ html
         Not Logged In
         
     br
-    div(class="content")
-      h2
-        div(id="nowplaying" class="song") #{nowplaying}
+    div(class = "contentwrapper")
+      div(class="content")
+        h2
+          div(id="nowplaying" class="song") #{nowplaying}
 
-      br
-      button(id="pause" onclick='stopsong()') Stop
-      button(id="next" onclick="switchsong('*')") Random
-      br
-      
-      ul(id="songlist")
-        each val in songs
-          li= val
-      form
-        input(type="text" name="linkbox" placeholder="Enter a YouTube URL..")
-    script(src="http://localhost:3000/socket.io/socket.io.js")
-    script.
-      var socket = io();
-      socket.on('updatesong', function(data) {document.getElementById('nowplaying').innerHTML = data.title})
-      function stopsong() {
+        br
+        button(id="pause" onclick='stopsong()') Stop
+        button(id="next" onclick="switchsong('*')") Random
+        br
+        
+        ul(id="songlist")
+          each val in songs
+            li= val
+        form
+          input(type="text" name="linkbox" placeholder="Enter a YouTube URL..")
+      script(src="http://localhost:3000/socket.io/socket.io.js")
+      script.
+        var socket = io();
+        socket.on('updatesong', function(data) {document.getElementById('nowplaying').innerHTML = data.title})
+        function stopsong() {
 
-        socket.emit('stopsong');
-      }
-      ul = document.getElementById('songlist');
-      function switchsong(e) {
+          socket.emit('stopsong');
+        }
+        ul = document.getElementById('songlist');
+        function switchsong(e) {
 
-        if(e.target) { socket.emit('playsong', e.target.innerHTML); }
-        else { socket.emit('playsong', "*") }
-        console.log('switchsong event emitted with ' + e.target.innerHTML);
+          if(e.target) { socket.emit('playsong', e.target.innerHTML); }
+          else { socket.emit('playsong', "*") }
+          console.log('switchsong event emitted with ' + e.target.innerHTML);
 
-      }
-      ul.addEventListener('click', switchsong, false);
+        }
+        ul.addEventListener('click', switchsong, false);
