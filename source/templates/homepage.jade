@@ -6,28 +6,27 @@ html
     link(rel='stylesheet', href='/css/index.css')
   meta(name="viewport" content="width=device-width, initial-scale=1.0")
   body
-    div(class = "header")
-      h1 SQUADROID
+    div(class = "headerwrapper")
+      div(class = "header")
+        h1 SQUADROID
 
-      div(class="userinfo").
-        Not Logged In
-        
-    br
+        div(class="userinfo").
+          Not Logged In
+          
     div(class = "contentwrapper")
       div(class="content")
-        h2
-          div(id="nowplaying" class="song") #{nowplaying}
+        div(class="musicui")
+          div(class="divhead")
+            div(id="nowplaying" class="song") #{nowplaying}
+            button(id="next" onclick="switchsong('*')") Random
+            button(id="stop" onclick='stopsong()') Stop
 
-        br
-        button(id="pause" onclick='stopsong()') Stop
-        button(id="next" onclick="switchsong('*')") Random
-        br
-        
-        ul(id="songlist")
-          each val in songs
-            li= val
-        form
-          input(type="text" name="linkbox" placeholder="Enter a YouTube URL..")
+          
+          ul(id="songlist")
+            each val in songs
+              li= val
+          form
+            input(type="text" id="linkbox" placeholder="Enter a YouTube URL..")
       script(src="http://localhost:3000/socket.io/socket.io.js")
       script.
         var socket = io();

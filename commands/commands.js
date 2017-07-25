@@ -91,6 +91,11 @@ exports.findCmd = function(m, c, g) {
 
                     }
 
+                    else if (cmd[1] ==="authme") {
+
+                        
+                    }
+
                 }
 
     }

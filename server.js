@@ -2,6 +2,8 @@ var express = require('express')
   , logger = require('morgan')
   , app = express()
   , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade');
+var session = require('express-session')
+var filestore = require('session-file-store')(session)
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -19,6 +21,15 @@ var nowplaying = 'No Song Playing';
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
+app.use(session({
+  name: 'server-session-cookie-id',
+  secret: 'my express secret'
+  saveUninitialized: true,
+  resave: true,
+  store: new filestore()
+
+}))
+
 
 
 //connections to homepage of webserver
