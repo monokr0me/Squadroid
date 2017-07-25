@@ -23,7 +23,7 @@ app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
 app.use(session({
   name: 'server-session-cookie-id',
-  secret: 'my express secret'
+  secret: 'my express secret',
   saveUninitialized: true,
   resave: true,
   store: new filestore()
