@@ -21,6 +21,7 @@
   "author": "me",
   "license": "UNLICENSED",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "discord.js": "^11.1.0",
     "discord.js-music": "^1.0.3",
     "express": "^4.15.3",
@@ -35,6 +36,8 @@
     "nodemon": "^1.9.2",
     "npm": "^5.3.0",
     "opusscript": "0.0.3",
+    "passport": "^0.3.2",
+    "passport-anonymous": "^1.0.1",
     "q": "^1.5.0",
     "session-file-store": "^1.0.0",
     "socket.io": "^2.0.3",

@@ -1,5 +1,5 @@
-const songs = require('./songmngr.js');
-
+var songs = require('./songmngr.js');
+var auth = require('./authentication');
 
 // m = message, c = client g = guild
 exports.findCmd = function(m, c, g) {
@@ -79,7 +79,7 @@ exports.findCmd = function(m, c, g) {
                         } else {console.log("could not find channel")}
 
                     }
-                    else if (cmd[1] ==="leave") {
+                    else if (cmd[1] === "leave") {
 
                         if (c.voiceConnections.first()) {
 
@@ -91,13 +91,22 @@ exports.findCmd = function(m, c, g) {
 
                     }
 
-                    else if (cmd[1] ==="authme") {
+                    else if (cmd[1] === "authme") {
 
+                        doAuth(m, c);
                         
+
                     }
 
                 }
 
     }
+
+}
+
+async function doAuth(m, c) {
+
+    auth.authUser(m.author, m, c);
+    
 
 }

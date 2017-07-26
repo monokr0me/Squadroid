@@ -1,21 +1,25 @@
 var express = require('express')
   , logger = require('morgan')
   , app = express()
-  , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade');
-var session = require('express-session')
-var filestore = require('session-file-store')(session)
+  , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade')
+  , passport = require('passport')
+  , AnonymousStrategy = require('passport-anonymous').Strategy
+  , session = require('express-session')
+  , filestore = require('session-file-store')(session)
+  , Discord = require('discord.js')
+  , jsonf = require('jsonfile')
+  , http = require('http').Server(app)
+  , cookieParser = require('cookie-parser');
 
-const Discord = require('discord.js');
+var io = require('socket.io')(http)
+
+ 
 const client = new Discord.Client();
-
-const jsonf = require('jsonfile');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
 const cmd = require('./commands/commands.js');
 const songmngr = require('./commands/songmngr.js');
 
 var songlist = './data/songlist.json';
+var userlist = './data/users.json';
 var bottoken = './token/token.json';
 var nowplaying = 'No Song Playing';
 
@@ -23,12 +27,15 @@ app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
 app.use(session({
   name: 'server-session-cookie-id',
-  secret: 'my express secret',
+  secret: 'somerandombullshitlul',
   saveUninitialized: true,
   resave: true,
   store: new filestore()
 
 }))
+app.use(cookieParser());
+
+passport.use(new AnonymousStrategy());
 
 
 
@@ -64,6 +71,25 @@ app.get('/', function (req, res, next) {
     next(e)
 
   }
+});
+
+app.get('/auth/:token', function(req, res) {
+  let token = req.params.token;
+  console.log("auth page sent")
+  jsonf.readFile(userlist, function(err, obj) {
+    console.log("opened userlist")
+    Object.keys(obj).forEach(function(key) {
+      console.log("checking auth for user " + key.username)
+      if(key.token === token) {
+        res.send("sup " + key.username);
+        console.log("auth found for " + key.username);
+      }
+
+    });
+
+  });
+
+
 })
 
 //when socket sends connection event 
