@@ -28,8 +28,8 @@ function createUser(user) {
 
     var username = user.username;
     var id = user.id;
-    var userobj = {"username" : username,"id" : id }
-    userobj["token"] = token;
+    var userobj = {"username" : username, "id" : id, "token" : token }
+
 
     var lobj = {};
     jsonf.readFile(userlist, function (err, obj) {

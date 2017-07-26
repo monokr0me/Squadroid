@@ -2,17 +2,15 @@ var express = require('express')
   , logger = require('morgan')
   , app = express()
   , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade')
-  , passport = require('passport')
-  , AnonymousStrategy = require('passport-anonymous').Strategy
   , session = require('express-session')
   , filestore = require('session-file-store')(session)
-  , Discord = require('discord.js')
-  , jsonf = require('jsonfile')
   , http = require('http').Server(app)
   , cookieParser = require('cookie-parser');
 
 var io = require('socket.io')(http)
-
+var passport = require('passport')
+var jsonf = require('jsonfile')
+var Discord = require('discord.js')
  
 const client = new Discord.Client();
 const cmd = require('./commands/commands.js');
@@ -22,6 +20,7 @@ var songlist = './data/songlist.json';
 var userlist = './data/users.json';
 var bottoken = './token/token.json';
 var nowplaying = 'No Song Playing';
+var AnonymousStrategy = require('passport-anonymous').Strategy
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
@@ -30,9 +29,17 @@ app.use(session({
   secret: 'somerandombullshitlul',
   saveUninitialized: true,
   resave: true,
-  store: new filestore()
+  store: new filestore(),
 
-}))
+  cookie: {
+
+    path: "/",
+    httpOnly: true,
+    secure: true
+
+  }
+
+}));
 app.use(cookieParser());
 
 passport.use(new AnonymousStrategy());
@@ -74,16 +81,27 @@ app.get('/', function (req, res, next) {
 });
 
 app.get('/auth/:token', function(req, res) {
-  let token = req.params.token;
-  console.log("auth page sent")
+
+  var token = req.params.token;
+
+  console.log("auth page sent, token " + token)
+
   jsonf.readFile(userlist, function(err, obj) {
+
     console.log("opened userlist")
+
     Object.keys(obj).forEach(function(key) {
-      console.log("checking auth for user " + key.username)
-      if(key.token === token) {
-        res.send("sup " + key.username);
-        console.log("auth found for " + key.username);
-      }
+
+        console.log("checking key " + key)
+        console.log("checking auth for user " + obj[key].username) 
+
+        if(obj[key].token === token) {
+
+          res.send("sup " + obj[key].username);
+
+          console.log("auth found for " + obj[key]["username"]);
+
+        }
 
     });
 
