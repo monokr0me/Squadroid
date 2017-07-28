@@ -79,6 +79,7 @@ app.get('/', function (req, res, next) {
 
   }
 });
+//change
 
 app.get('/auth/:token', function(req, res) {
 
@@ -96,10 +97,9 @@ app.get('/auth/:token', function(req, res) {
         console.log("checking auth for user " + obj[key].username) 
 
         if(obj[key].token === token) {
-
-          res.send("sup " + obj[key].username);
-
-          console.log("auth found for " + obj[key]["username"]);
+          res.cookie("testcookie" , 'cookie_value').send('Cookie is set, SUP ' + obj[key].username);
+          
+          console.log("auth found for " + obj[key].username);
 
         }
 
