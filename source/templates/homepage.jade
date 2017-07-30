@@ -9,10 +9,11 @@ html
     div(class = "headerwrapper")
       div(class = "header")
         h1 SQUADROID
+        if (username)
+          div(class="userinfo") Welcome, #{username}
+        else 
+          div(class="userinfo") Not Logged In
 
-        div(class="userinfo").
-          Not Logged In
-          
     div(class = "contentwrapper")
       div(class="content")
         div(class="musicui")

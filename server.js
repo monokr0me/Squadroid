@@ -1,56 +1,74 @@
-var express = require('express')
-  , logger = require('morgan')
+var express = require("express")
+  , logger = require("morgan")
   , app = express()
-  , template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade')
-  , session = require('express-session')
-  , filestore = require('session-file-store')(session)
-  , http = require('http').Server(app)
-  , cookieParser = require('cookie-parser');
+  , template = require("jade").compileFile(__dirname + "/source/templates/homepage.jade")
+  , cookieParser = require("cookie-parser")
+  , session = require("express-session")
+  , filestore = require("session-file-store")(session)
+  , http = require("http").Server(app);
 
-var io = require('socket.io')(http)
-var passport = require('passport')
-var jsonf = require('jsonfile')
-var Discord = require('discord.js')
- 
+var cookieSession = require('cookie-session')
+var io = require("socket.io")(http)
+var passport = require("passport")
+var jsonf = require("jsonfile")
+var Discord = require("discord.js")
+
 const client = new Discord.Client();
-const cmd = require('./commands/commands.js');
-const songmngr = require('./commands/songmngr.js');
+const cmd = require("./commands/commands.js");
+const songmngr = require("./commands/songmngr.js");
 
-var songlist = './data/songlist.json';
-var userlist = './data/users.json';
-var bottoken = './token/token.json';
-var nowplaying = 'No Song Playing';
-var AnonymousStrategy = require('passport-anonymous').Strategy
+var songlist = "./data/songlist.json";
+var userlist = "./data/users.json";
+var bottoken = "./token/token.json";
+var nowplaying = "No Song Playing";
+var AnonymousStrategy = require("passport-anonymous").Strategy
 
-app.use(logger('dev'));
-app.use(express.static(__dirname + '/static'));
-app.use(session({
-  name: 'server-session-cookie-id',
-  secret: 'somerandombullshitlul',
+
+app.use(cookieParser("mya11fjsew234f"));
+app.use(logger("dev"));
+app.use(express.static(__dirname + "/static"));
+
+var fileStore = new filestore("fs", {
+  path: __dirname + "/sessions/"
+});
+app.use(cookieSession({
+  name: "id",
+  secret: "mya11fjsew234f",
   saveUninitialized: true,
   resave: true,
-  store: new filestore(),
-
-  cookie: {
-
-    path: "/",
-    httpOnly: true,
-    secure: true
-
-  }
+  maxAge: 1000 * 60 * 60 *24 * 365,
+  signed: true
 
 }));
-app.use(cookieParser());
+
 
 passport.use(new AnonymousStrategy());
 
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//PAGE REQUESTS
 //connections to homepage of webserver
 //TODO: implement proper session handling & authentication
-app.get('/', function (req, res, next) {
+app.get("/", async function (req, res, next) {
+  var cookies = req.cookies;
+  var user;
+  //console.log("home page sent, token " + token)
+  console.log("Cookies: ", req.cookies)
+  console.log("auco: " + cookies.auco)
+    if (req.session.auth) {
+      console.log("found auth cookie");
 
-  try {
+      user = await getUserFromToken(req.session.auth);
+
+      if (user) { 
+
+        console.log("found cookie, user is " + user.username);
+
+
+
+      }
+
+    }
 
     // make an array of the obj keys
     var k = [];  
@@ -68,61 +86,56 @@ app.get('/', function (req, res, next) {
     });
 
     //pass necessary values to the jade template before rendering
-    var html = template({ 'songs' : k, 'nowplaying' : nowplaying });
+    if(user) {
+      console.log("sent logged in template");
+      var html = template({ "songs" : k, "nowplaying" : nowplaying, "username": user.username });
+    } else {
+      var html = template({ "songs" : k, "nowplaying" : nowplaying});
+    }
 
     //send template to the client connection
     res.send(html)
      });
-  } catch (e) {
-
-    next(e)
-
-  }
 });
-//change
 
-app.get('/auth/:token', function(req, res) {
+app.get("/auth/:token", async function(req, res) {
+  console.log("auth page session ID: " +req.sessionID)
 
   var token = req.params.token;
 
   console.log("auth page sent, token " + token)
 
-  jsonf.readFile(userlist, function(err, obj) {
+  var user = await getUserFromToken(token);
 
-    console.log("opened userlist")
+  if (user) { console.log("userId matched"); req.session.auth = token; }
+  else { console.log("user token pair not found") }
 
-    Object.keys(obj).forEach(function(key) {
+  res.redirect("/");
 
-        console.log("checking key " + key)
-        console.log("checking auth for user " + obj[key].username) 
+  
 
-        if(obj[key].token === token) {
-          res.cookie("testcookie" , 'cookie_value').send('Cookie is set, SUP ' + obj[key].username);
-          
-          console.log("auth found for " + obj[key].username);
 
-        }
-
-    });
-
-  });
 
 
 })
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SOCKETS
+//
 //when socket sends connection event 
-io.on('connection', function(socket){
+io.on("connection", function(socket){
 
-  console.log('a user connected');
+  console.log("a user connected");
 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
+  socket.on("disconnect", function(){
+    console.log("user disconnected");
   });
 
 
 
   //stopsong event sent by clicking stop button
-  socket.on('stopsong', function() {
+  socket.on("stopsong", function() {
 
     //if voiceConnection exists
     if (client.voiceConnections.first()) {
@@ -131,12 +144,12 @@ io.on('connection', function(socket){
     client.voiceConnections.first().dispatcher.end();
 
     //update nowplaying value
-    nowplaying = 'No Song Playing';
+    nowplaying = "No Song Playing";
 
     //update song listing on website
-    socket.emit('updatesong', {'title': nowplaying});
+    socket.emit("updatesong", {"title": nowplaying});
 
-    //update bot's Game value
+    //update bot"s Game value
     client.user.setGame(nowplaying);
   }
 
@@ -144,14 +157,14 @@ io.on('connection', function(socket){
   });
 
     //songplays event sent by songmngr.playSong with the title of current song
-  client.on('songplays', function(song) {
+  client.on("songplays", function(song) {
     console.log("songplays event received")
 
     //update nowplaying 
     nowplaying = song.title;
 
     //send updatesong event to the socket to update webpage
-    io.emit('updatesong', {'title': nowplaying});
+    io.emit("updatesong", {"title": nowplaying});
     
     //update "game" on bot with currently playing song
     client.user.setGame(nowplaying);
@@ -159,7 +172,7 @@ io.on('connection', function(socket){
   });
 
   //playsong event sent from webpage
-  socket.on('playsong', function(s) {
+  socket.on("playsong", function(s) {
 
 
     console.log("playsong event received with " + s);
@@ -173,17 +186,19 @@ io.on('connection', function(socket){
 });
 
 
-  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//DISCORD CLIENT
 //when discord client is ready
-client.on('ready', () => {
+client.on("ready", () => {
 
-  console.log('I am ready!');
+  console.log("I am ready!");
 
 });
 
 
 //when client reads a message in discord
-client.on('message', message => {
+client.on("message", message => {
 
   try {
 
@@ -198,7 +213,6 @@ client.on('message', message => {
 });
 
 //send login token
-//TODO: remove hardcoded token for security
 jsonf.readFile(bottoken, function(err, obj) {
   client.login(obj.token);
 })
@@ -207,6 +221,40 @@ jsonf.readFile(bottoken, function(err, obj) {
 //start listening for connections to webserver
 http.listen(process.env.PORT || 3000, function () {
 
-  console.log('Listening on http://localhost:' + (process.env.PORT || 3000))
+  console.log("Listening on http://localhost:" + (process.env.PORT || 3000))
 
 })
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//MISC FUNCTIONS
+//getUserFromToken takes a token and checks it against users.json to see if the token is a registered user
+async function getUserFromToken(token) {
+
+  var keymatch = new Promise( function(resolve, reject) {
+  jsonf.readFile(userlist, function(err, obj) {
+
+    Object.keys(obj).forEach(function(key, index, array) {
+
+
+        if(obj[key].token === token) {
+          
+          let userobj = { "username": obj[key].username, "id": key}
+          resolve(userobj);
+
+        }
+    
+    if (index === array.length - 1) {
+      resolve("");
+    }
+    });
+
+
+  });
+  });
+  return await keymatch;
+
+}
+
