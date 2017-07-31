@@ -50,15 +50,13 @@ passport.use(new AnonymousStrategy());
 //connections to homepage of webserver
 //TODO: implement proper session handling & authentication
 app.get("/", async function (req, res, next) {
-  var cookies = req.cookies;
+  let sess = req.session;
   var user;
   //console.log("home page sent, token " + token)
-  console.log("Cookies: ", req.cookies)
-  console.log("auco: " + cookies.auco)
-    if (req.session.auth) {
-      console.log("found auth cookie");
+    if (sess.auth) {
+      //console.log("found auth cookie");
 
-      user = await getUserFromToken(req.session.auth);
+      user = await getUserFromToken(sess.auth);
 
       if (user) { 
 
@@ -87,7 +85,7 @@ app.get("/", async function (req, res, next) {
 
     //pass necessary values to the jade template before rendering
     if(user) {
-      console.log("sent logged in template");
+      //console.log("sent logged in template");
       var html = template({ "songs" : k, "nowplaying" : nowplaying, "username": user.username });
     } else {
       var html = template({ "songs" : k, "nowplaying" : nowplaying});
