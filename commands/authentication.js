@@ -8,7 +8,7 @@ var userlist = './data/users.json';
 exports.authUser = async function(user, m, c) {
 
 
-    var newuser = createUser(user);
+    var newuser = createUser(user, m, c);
     var tokenmatch = newuser.token;
     console.log("generated token " + tokenmatch)
 
@@ -17,21 +17,31 @@ exports.authUser = async function(user, m, c) {
 
 }
 
-function createUser(user) {
+function createUser(user, m, c) {
 
 
 
-    var token = crypto.randomBytes(48).toString('hex');
+    let token = crypto.randomBytes(48).toString('hex');
     
 
 
 
-    var username = user.username;
-    var id = user.id;
-    var userobj = {"username" : username, "id" : id, "token" : token }
+    let username = user.username;
+    let id = user.id;
+    let roleCollection = Array.from(m.member.roles.values());
+    let roles = [];
+    for (let i = 0; i < roleCollection.length; i++) {
+
+        roles[i] = { "name": roleCollection[i].name, "id" : roleCollection[i].id }
+
+    }
+
+        
+
+    let userobj = {"username" : username, "id" : id, "token" : token, "roles" : roles }
 
 
-    var lobj = {};
+    let lobj = {};
     jsonf.readFile(userlist, function (err, obj) {
         lobj = obj;
         if (err) {console.error(err);}

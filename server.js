@@ -4,12 +4,10 @@ var express = require("express")
   , template = require("jade").compileFile(__dirname + "/source/templates/homepage.jade")
   , cookieParser = require("cookie-parser")
   , session = require("express-session")
-  , filestore = require("session-file-store")(session)
   , http = require("http").Server(app);
 
 var cookieSession = require('cookie-session')
 var io = require("socket.io")(http)
-var passport = require("passport")
 var jsonf = require("jsonfile")
 var Discord = require("discord.js")
 
@@ -21,28 +19,24 @@ var songlist = "./data/songlist.json";
 var userlist = "./data/users.json";
 var bottoken = "./token/token.json";
 var nowplaying = "No Song Playing";
-var AnonymousStrategy = require("passport-anonymous").Strategy
 
 
 app.use(cookieParser("mya11fjsew234f"));
 app.use(logger("dev"));
 app.use(express.static(__dirname + "/static"));
 
-var fileStore = new filestore("fs", {
-  path: __dirname + "/sessions/"
-});
 app.use(cookieSession({
   name: "id",
   secret: "mya11fjsew234f",
   saveUninitialized: true,
   resave: true,
   maxAge: 1000 * 60 * 60 *24 * 365,
-  signed: true
+  signed: true,
+  httpOnly: false
 
 }));
 
 
-passport.use(new AnonymousStrategy());
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,7 +225,7 @@ http.listen(process.env.PORT || 3000, function () {
 //getUserFromToken takes a token and checks it against users.json to see if the token is a registered user
 async function getUserFromToken(token) {
 
-  var keymatch = new Promise( function(resolve, reject) {
+  var usermatch = new Promise( function(resolve, reject) {
   jsonf.readFile(userlist, function(err, obj) {
 
     Object.keys(obj).forEach(function(key, index, array) {
@@ -239,7 +233,7 @@ async function getUserFromToken(token) {
 
         if(obj[key].token === token) {
           
-          let userobj = { "username": obj[key].username, "id": key}
+          let userobj = { "username": obj[key].username, "id": key, "roles" : obj[key].roles}
           resolve(userobj);
 
         }
@@ -252,7 +246,7 @@ async function getUserFromToken(token) {
 
   });
   });
-  return await keymatch;
+  return usermatch;
 
 }
 
