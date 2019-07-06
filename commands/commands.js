@@ -30,8 +30,7 @@ exports.findCmd = function(m, c, g) {
                             songs.addSong(cmd[2], c);
 
                         } else {
-
-                            m.reply("Error: Valid youtube link not found")
+                            sendError(m, c, "I don't recognize that as a valid song. Make sure it is a standard youtube link")
 
                         }
 
@@ -40,9 +39,13 @@ exports.findCmd = function(m, c, g) {
                     else if (cmd[1] === "playsong") {
 
                         console.log("found cmd playsong");
-                        if (cmd[2] && true) { //placeholder for uRL verification
-
-                            songs.playSong(cmd[2], c);
+                        if (cmd[2] && true) { //placeholder for URL verification
+                            let songreq = '';
+                            for (i = 2; i < cmd.length; i++) {
+                                songreq = songreq + ' ' + cmd[i]
+                            }
+                            console.log('song str: ' + songreq)
+                            songs.playSong(songreq, c)
 
                         } else {
 
@@ -60,6 +63,7 @@ exports.findCmd = function(m, c, g) {
 
 
                         }
+                        c.emit('stopsong');
                     }
 
                     else if (cmd[1] ==="joinme") {
@@ -76,7 +80,10 @@ exports.findCmd = function(m, c, g) {
                             });
 
 
-                        } else {console.log("could not find channel")}
+                        } else {
+                            console.log("could not find channel")
+                            sendError(m, c, "You are not in a voice channel I can join, or something is wrong with me.")
+                        }
 
                     }
                     else if (cmd[1] === "leave") {
@@ -99,6 +106,9 @@ exports.findCmd = function(m, c, g) {
                     }
 
                 }
+        m.delete()
+            .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+            .catch(console.error);
 
     }
 
@@ -109,4 +119,8 @@ async function doAuth(m, c) {
     auth.authUser(m.author, m, c);
     
 
+}
+//DM an error to the user who sent command
+async function sendError(m, c, e) {
+    let dmChannel = m.author.sendMessage(e)
 }

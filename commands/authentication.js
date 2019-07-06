@@ -28,7 +28,7 @@ function createUser(user, m, c) {
 
     let username = user.username;
     let id = user.id;
-    let roleCollection = Array.from(m.member.roles.values());
+    let roleCollection = Array.from(m.author.roles.values());
     let roles = [];
     for (let i = 0; i < roleCollection.length; i++) {
 

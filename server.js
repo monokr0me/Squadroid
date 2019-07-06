@@ -1,7 +1,7 @@
 var express = require("express")
   , logger = require("morgan")
   , app = express()
-  , template = require("jade").compileFile(__dirname + "/source/templates/homepage.jade")
+  , template = require("pug").compileFile(__dirname + "/source/templates/homepage.pug")
   , cookieParser = require("cookie-parser")
   , session = require("express-session")
   , http = require("http").Server(app);
@@ -17,7 +17,7 @@ const songmngr = require("./commands/songmngr.js");
 
 var songlist = "./data/songlist.json";
 var userlist = "./data/users.json";
-var bottoken = "./token/token.json";
+var bottoken = "./data/token.json";
 var nowplaying = "No Song Playing";
 
 
@@ -58,6 +58,9 @@ app.get("/", async function (req, res, next) {
 
 
 
+      }
+      else {
+        console.log("user is guest")
       }
 
     }
@@ -142,7 +145,7 @@ io.on("connection", function(socket){
     socket.emit("updatesong", {"title": nowplaying});
 
     //update bot"s Game value
-    client.user.setGame(nowplaying);
+    client.user.setActivity(nowplaying);
   }
 
 
@@ -159,9 +162,14 @@ io.on("connection", function(socket){
     io.emit("updatesong", {"title": nowplaying});
     
     //update "game" on bot with currently playing song
-    client.user.setGame(nowplaying);
+    client.user.setActivity(nowplaying);
 
   });
+
+  client.on("stopsong", function() {
+    console.log("updating activity")
+    client.user.setActivity("Nothing");
+  })
 
   //playsong event sent from webpage
   socket.on("playsong", function(s) {
@@ -183,7 +191,7 @@ io.on("connection", function(socket){
 //DISCORD CLIENT
 //when discord client is ready
 client.on("ready", () => {
-
+  client.user.setActivity("Nothing");
   console.log("I am ready!");
 
 });

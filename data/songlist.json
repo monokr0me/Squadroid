@@ -1,27 +1,7 @@
 {
-  "PINK GUY - STFU": {
-    "title": "PINK GUY - STFU",
-    "data": "https://www.youtube.com/watch?v=OLpeX4RRo28"
-  },
-  "SMLE - Every Chance You Get": {
-    "title": "SMLE - Every Chance You Get",
-    "data": "https://www.youtube.com/watch?v=0oXtwy2vBPU"
-  },
-  "Syntact - Shallow": {
-    "title": "Syntact - Shallow",
-    "data": "https://www.youtube.com/watch?v=2Fc2zKGahgg"
-  },
   "a-ha - Take On Me (Official Video)": {
     "title": "a-ha - Take On Me (Official Video)",
     "data": "https://www.youtube.com/watch?v=djV11Xbc914"
-  },
-  "PINK GUY X GETTER X NICK COLLETTI - \"HOOD RICH\"": {
-    "title": "PINK GUY X GETTER X NICK COLLETTI - \"HOOD RICH\"",
-    "data": "https://www.youtube.com/watch?v=95QpJScedEM"
-  },
-  "Pink Guy - Fried Noodles (Getter Remix) - OFFICIAL VIDEO": {
-    "title": "Pink Guy - Fried Noodles (Getter Remix) - OFFICIAL VIDEO",
-    "data": "https://www.youtube.com/watch?v=E1iwrfgNOUU"
   },
   "Dr. Dre - Kush ft. Snoop Dogg, Akon": {
     "title": "Dr. Dre - Kush ft. Snoop Dogg, Akon",
@@ -66,5 +46,13 @@
   "2SEATER": {
     "title": "2SEATER",
     "data": "https://www.youtube.com/watch?v=zIkjsPIdAWg"
+  },
+  "Lil Nas X - Old Town Road (Lyrics) ft. Billy Ray Cyrus": {
+    "title": "Lil Nas X - Old Town Road (Lyrics) ft. Billy Ray Cyrus",
+    "data": "https://www.youtube.com/watch?v=t4AvDchyNH0"
+  },
+  "Lil Nas X, Cardi B - Rodeo (Official Audio)": {
+    "title": "Lil Nas X, Cardi B - Rodeo (Official Audio)",
+    "data": "https://www.youtube.com/watch?v=kx0Z0B8Xox0"
   }
 }

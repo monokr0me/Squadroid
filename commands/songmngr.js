@@ -4,7 +4,7 @@ const jsonf = require('jsonfile');
 var file = './data/songlist.json'
 
 //url = url of song (youtube only), c = client obj of bot
-exports.addSong = function(url, c) {
+exports.addSong = async function(url, c) {
 
     //lots of things to go wrong when read/writing files, want to make sure we catch them
     try {
@@ -16,22 +16,21 @@ exports.addSong = function(url, c) {
         jsonf.readFile(file, function(err, obj) { lobj = obj;});
 
         //get video info with ytdl, create an obj with relevant info and write it back to songlist.json
-        ytdl.getInfo(url, function(err, info) {
+        let info = await ytdl.getInfo(url)
 
-            //construct the object for the song info 
-            var vidinfo = {title: info.title, data: url};
+        //construct the object for the song info 
+        let vidinfo = {title: info.title, data: url}
 
-            //add the new vidinfo obj to the temporary json
-            lobj[vidinfo.title] = vidinfo;
+        //add the new vidinfo obj to the temporary json
+        lobj[vidinfo.title] = vidinfo;
 
-            //write lobj back to the file
-            jsonf.writeFile(file, lobj, {spaces: 2}, function(err) {
+        //write lobj back to the file
+        jsonf.writeFile(file, lobj, {spaces: 2}, function(err) {
 
-                if (err) {console.error(err);}
-
-            });
+            if (err) {console.error(err);}
 
         });
+
 
     } catch (e) {
         console.log(e);
@@ -49,12 +48,12 @@ exports.playSong = function(kw, c) {
     if(c.voiceConnections.first()) {
 
         vcOut = c.voiceConnections.first();
-        var song = {};
+        let song = {};
         jsonf.readFile(file, function(err, obj) {
             song = pickSong(obj, kw);
-        
+            console.log(song)
         //ensure that the song obj returned exists
-        if (song != null) {
+        if (song != undefined) {
 
             console.log("song " + song.title + " processed");
 
@@ -94,19 +93,19 @@ function pickSong(obj, kw) {
         console.log("searching for song " + kw);
 
         //data parsed with an & in it will cause problems, so we replace it
-        var queue = kw.replace(/&amp;/g, '&'); 
+        let queue = kw.replace(/&amp;/g, '&'); 
 
         //use the quote function to sanitize the kw input before creating the regexp pattern
-        var newqueue = new RegExp(RegExp.quote(queue), "i"); 
+        let newqueue = new RegExp(RegExp.quote(queue), "i"); 
 
         // array for all matching songs
-        var found = []; 
+        let found = []; 
 
         // index for found array
-        var j = 0; 
+        let j = 0; 
 
         //number of keys
-        var size = Object.keys(obj).length;
+        let size = Object.keys(obj).length;
         Object.keys(obj).forEach(function(key) {
             if (key.match(newqueue)) {
 
@@ -123,13 +122,13 @@ function pickSong(obj, kw) {
             console.log("search failed for " + kw + ", returning random");
 
             //select a random index within the song list
-            return Math.floor(Math.random() * (Object.keys(obj).length - 1)) + 1; 
+            aIndex = Math.floor(Math.random() * (Object.keys(obj).length - 1)) + 1; 
         }
         //if we have multiple matches, select one at random
         else if(found.length > 1) { 
 
             //aIndex is used to match the key from found[] back to the original keys[] array
-            var aIndex = Math.floor(Math.random() * (found.length - 1)) + 1;
+            let aIndex = Math.floor(Math.random() * (found.length - 1)) + 1;
 
         //if only 1 song is matched, set the index to 0 to match that one song            
         } else { var aIndex = 0;}
