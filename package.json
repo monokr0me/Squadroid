@@ -37,7 +37,7 @@
     "morgan": "^1.9.1",
     "node-opus": "^0.2.9",
     "nodemon": "^1.19.1",
-    "npm": "^6.9.0",
+    "npm": "^6.14.6",
     "opusscript": "0.0.3",
     "passport": "^0.3.2",
     "passport-anonymous": "^1.0.1",
