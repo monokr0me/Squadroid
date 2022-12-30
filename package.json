@@ -33,7 +33,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "jsonfile": "^3.0.1",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "morgan": "^1.9.1",
     "node-opus": "^0.2.9",
     "nodemon": "^1.19.1",
